@@ -25,6 +25,7 @@ matplotlib
 ## Usage
 
 Run the notebook cells in order to:
+
 1. Import and explore the data
 2. Clean and standardize values
 3. Generate aggregated reports
