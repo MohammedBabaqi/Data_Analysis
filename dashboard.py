@@ -6,8 +6,8 @@ from datetime import datetime
 
 # Set page configuration
 st.set_page_config(
-    page_title="Orders Insights Dashboard",
-    page_icon="📊",
+    page_title="SmartTech Orders Insights Dashboard",
+    page_icon="💡",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -58,7 +58,7 @@ df = load_data()
 if not df.empty:
     try:
         # --- Sidebar ---
-        st.sidebar.title("📊 Filter Dashboard")
+        st.sidebar.title("⚙️ Filter Dashboard")
         st.sidebar.markdown("---")
 
         # Date Filter
@@ -118,7 +118,7 @@ if not df.empty:
                 return f"{int(num)}"
 
         # --- Main Dashboard ---
-        st.title("🚀 Sales Performance Insights")
+        st.title("📊 SmartTech Orders Performance Insights")
         st.markdown(f"**Data Overview:** Showing {len(filtered_df):,} orders from {date_range[0]} to {date_range[1]}")
 
         # KPI Row
@@ -163,13 +163,13 @@ if not df.empty:
         st.markdown("---")
 
         # Row 2: Treemap and Scatter Plot
-        chart_col3, chart_col4 = st.columns([1, 1.5])
+        chart_col3, chart_col4 = st.columns(2)
 
         with chart_col3:
-            st.subheader("🌳 Product Hierarchy (Treemap)")
+            st.subheader("🌳 Product Hierarchy")
             if not filtered_df.empty:
                 fig_tree = px.treemap(filtered_df, path=['Category', 'Sub Category'], values='Total Sales',
-                                    color='Total Sales', color_continuous_scale='RdBu')
+                                    color='Total Sales', color_continuous_scale='Blues')
                 st.plotly_chart(fig_tree, use_container_width=True)
 
         with chart_col4:
@@ -177,8 +177,7 @@ if not df.empty:
             if not filtered_df.empty:
                 fig_scatter = px.scatter(filtered_df, x='Unit Price', y='Quantity', 
                                         size='Total Sales', color='Category', 
-                                        hover_name='Item', template="plotly_white",
-                                        title="Higher Price vs Volume Correlation")
+                                        hover_name='Item', template="plotly_white")
                 st.plotly_chart(fig_scatter, use_container_width=True)
 
         st.markdown("---")
@@ -191,15 +190,15 @@ if not df.empty:
             if not filtered_df.empty:
                 sales_rep_df = filtered_df.groupby('SalesPerson ID')['Total Sales'].sum().sort_values(ascending=False).head(10).reset_index()
                 fig_rep = px.pie(sales_rep_df, values='Total Sales', names='SalesPerson ID', hole=0.4,
-                                template="plotly_white", color_discrete_sequence=px.colors.qualitative.Pastel)
+                                template="plotly_white", color_discrete_sequence=px.colors.sequential.Blues_r)
                 st.plotly_chart(fig_rep, use_container_width=True)
 
         with chart_col6:
             st.subheader("🏙️ Top 10 Cities by Revenue")
             if not filtered_df.empty:
-                city_df = filtered_df.groupby('City')['Total Sales'].sum().sort_values(ascending=False).head(10).reset_index()
+                city_df = filtered_df.groupby('City')['Total Sales'].sum().sort_values(ascending=True).head(10).reset_index()
                 fig_city = px.bar(city_df, x='Total Sales', y='City', orientation='h', 
-                                template="plotly_white", color='Total Sales', color_continuous_scale='Greens')
+                                template="plotly_white", color='Total Sales', color_continuous_scale='Blues')
                 st.plotly_chart(fig_city, use_container_width=True)
 
         st.markdown("---")
@@ -209,7 +208,7 @@ if not df.empty:
         if not filtered_df.empty:
             map_df = filtered_df.dropna(subset=['Lat', 'Lng'])
             if not map_df.empty:
-                st.map(map_df, latitude='Lat', longitude='Lng', size='Quantity', color='#ff4b4b')
+                st.map(map_df, latitude='Lat', longitude='Lng', size='Quantity', color='#007bff')
             else:
                 st.info("No valid latitude/longitude coordinates available.")
         else:
@@ -223,7 +222,6 @@ if not df.empty:
             st.dataframe(filtered_df.drop(columns=cols_to_drop).head(100), use_container_width=True)
 
         st.markdown("---")
-        st.markdown("Dashboard refined by Antigravity AI")
     except Exception as e:
         st.error(f"Dashboard Runtime Error: {e}")
         st.exception(e)
