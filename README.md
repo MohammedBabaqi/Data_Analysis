@@ -6,7 +6,7 @@
 
 An end-to-end data engineering and analytics pipeline designed to transform raw global sales data into actionable business intelligence. This project features a robust data cleaning pipeline, deep exploratory analysis, and a high-performance interactive dashboard.
 
-![Dashboard Screenshot](Images/screenshot.png)
+![Dashboard Screenshot](Images/1.png)
 
 ## 📁 Project Architecture
 
